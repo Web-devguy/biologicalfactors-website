@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biological Factors in Library Materials</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#1d2a3a;
+      --slate:#2f4a64;
+      --ocean:#4a7aa8;
+      --mist:#e9f1f7;
+      --paper:#f7f4ee;
+      --accent:#8fbad9;
+      --warm:#f2e6d4;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Archivo",sans-serif;
+      color:var(--ink);
+      background:linear-gradient(120deg,var(--paper),var(--mist));
+      overflow-x:hidden;
+    }
+
+    .bg-orb{
+      position:fixed;
+      inset:-20%;
+      z-index:-1;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(143,186,217,0.35), transparent 55%),
+        radial-gradient(circle at 80% 25%, rgba(74,122,168,0.25), transparent 60%),
+        radial-gradient(circle at 45% 80%, rgba(242,230,212,0.65), transparent 55%);
+      animation:float 18s ease-in-out infinite;
+      filter:blur(8px);
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0) translateX(0) scale(1);}
+      50%{transform:translateY(-18px) translateX(12px) scale(1.02);}
+      100%{transform:translateY(0) translateX(0) scale(1);}
+    }
+
+    nav{
+      position:fixed;
+      top:0;
+      width:100%;
+      background:rgba(29,42,58,0.94);
+      color:white;
+      padding:14px 6%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:1000;
+      backdrop-filter:blur(6px);
+    }
+
+    .brand{
+      font-family:"Source Serif 4",serif;
+      font-size:18px;
+      letter-spacing:0.5px;
+    }
+
+    .nav-links{
+      list-style:none;
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .nav-links a{
+      color:white;
+      text-decoration:none;
+      font-size:14px;
+      transition:color 0.2s ease;
+    }
+
+    .nav-links a:hover{
+      color:var(--accent);
+    }
+
+    .menu-btn{
+      display:none;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.35);
+      color:white;
+      padding:6px 10px;
+      border-radius:6px;
+      cursor:pointer;
+      transition:transform 0.2s ease, background 0.2s ease;
+    }
+
+    .menu-btn:active{
+      transform:scale(0.96);
+    }
+
+    section{
+      padding:110px 8% 80px;
+    }
+
+    .hero{
+      padding-top:140px;
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:40px;
+      align-items:center;
+    }
+
+    .hero h1{
+      font-family:"Source Serif 4",serif;
+      font-size:44px;
+      color:var(--slate);
+      line-height:1.15;
+    }
+
+    .hero p{
+      margin-top:14px;
+      font-size:18px;
+      color:#2b3f52;
+      max-width:620px;
+    }
+
+    .hero-card{
+      background:rgba(255,255,255,0.9);
+      border:1px solid rgba(74,122,168,0.2);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 14px 28px rgba(29,42,58,0.12);
+    }
+
+    .hero-card h3{
+      font-size:16px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:var(--ocean);
+    }
+
+    .hero-card ul{
+      margin-top:14px;
+      list-style:none;
+      display:grid;
+      gap:12px;
+      font-size:14px;
+      color:#2f4357;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--mist);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:#254057;
+      border:1px solid rgba(74,122,168,0.15);
+    }
+
+    .cta{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:12px 20px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      transition:transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn.primary{
+      background:var(--ocean);
+      color:white;
+    }
+
+    .btn.secondary{
+      background:transparent;
+      color:var(--ocean);
+      border:1px solid var(--ocean);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .btn.primary:hover{
+      background:#3e6c95;
+    }
+
+    .btn:active{
+      transform:translateY(0) scale(0.98);
+    }
+
+    .section-title{
+      font-family:"Source Serif 4",serif;
+      font-size:30px;
+      color:var(--slate);
+      margin-bottom:12px;
+    }
+
+    .section-lead{
+      max-width:780px;
+      color:#2f4357;
+      font-size:16px;
+    }
+
+    .cards{
+      margin-top:30px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:22px;
+    }
+
+    .card{
+      background:white;
+      padding:20px;
+      border-radius:14px;
+      border:1px solid rgba(29,42,58,0.08);
+      box-shadow:0 10px 22px rgba(29,42,58,0.08);
+      transform:translateY(20px);
+      opacity:0;
+      transition:transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .card.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .card h3{
+      margin-top:10px;
+      color:var(--ocean);
+      font-size:18px;
+    }
+
+    .badge{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:var(--mist);
+      color:var(--slate);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+
+    .causes{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:30px;
+      align-items:start;
+      margin-top:24px;
+    }
+
+    .cause-block{
+      background:rgba(255,255,255,0.9);
+      border-radius:16px;
+      padding:20px;
+      border:1px solid rgba(74,122,168,0.15);
+      box-shadow:0 12px 24px rgba(29,42,58,0.08);
+    }
+
+    .cause-block h4{
+      color:var(--slate);
+      margin-bottom:8px;
+      font-size:17px;
+    }
+
+    .cause-block p{
+      color:#2f4357;
+      font-size:15px;
+    }
+
+    .effects-grid{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:20px;
+    }
+
+    .effect{
+      background:var(--paper);
+      border-radius:14px;
+      padding:18px;
+      border:1px dashed rgba(74,122,168,0.35);
+    }
+
+    .effect h4{
+      color:var(--ocean);
+      margin-bottom:8px;
+    }
+
+    .gallery{
+      margin-top:30px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+
+    .gallery-item{
+      position:relative;
+      border-radius:16px;
+      overflow:hidden;
+      min-height:180px;
+      background:
+        linear-gradient(140deg, rgba(74,122,168,0.25), rgba(143,186,217,0.45)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 12px, transparent 12px, transparent 24px);
+      transform:translateY(20px);
+      opacity:0;
+      transition:transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .gallery-item.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .gallery-item span{
+      position:absolute;
+      bottom:12px;
+      left:12px;
+      background:rgba(29,42,58,0.86);
+      color:white;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:0.4px;
+    }
+
+    .about{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:28px;
+      margin-top:24px;
+      align-items:start;
+    }
+
+    .about-card{
+      background:white;
+      border-radius:16px;
+      padding:20px;
+      border:1px solid rgba(29,42,58,0.08);
+      box-shadow:0 10px 22px rgba(29,42,58,0.08);
+    }
+
+    .references{
+      list-style:none;
+      display:grid;
+      gap:10px;
+      font-size:14px;
+      color:#2f4357;
+    }
+
+    footer{
+      text-align:center;
+      padding:24px 8%;
+      background:rgba(29,42,58,0.95);
+      color:white;
+      font-size:13px;
+    }
+
+    @media (max-width: 980px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+      .causes{
+        grid-template-columns:1fr;
+      }
+      .about{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      nav{
+        padding:12px 6%;
+      }
+      .nav-links{
+        display:none;
+        position:absolute;
+        top:52px;
+        right:6%;
+        background:rgba(29,42,58,0.98);
+        padding:14px;
+        border-radius:10px;
+        flex-direction:column;
+        gap:12px;
+      }
+      .nav-links.open{
+        display:flex;
+      }
+      .menu-btn{
+        display:inline-flex;
+      }
+      section{
+        padding:96px 7% 70px;
+      }
+      .hero h1{
+        font-size:34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb"></div>
+
+  <nav>
+    <div class="brand">Library Preservation Atlas</div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#threats">Threats</a></li>
+      <li><a href="#causes">Causes</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#prevention">Prevention</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">References</a></li>
+    </ul>
+  </nav>
+
+  <section id="home" class="hero">
+    <div>
+      <span class="pill">Biological Factors in Library Materials</span>
+      <h1>Protecting collections from living threats and slow deterioration.</h1>
+      <p>
+        Biological factors are living organisms that feed on or colonize library and archival materials. Insects, rodents,
+        fungi, and mold can weaken paper, stain surfaces, and damage bindings. Preservation reduces loss, ensures access,
+        and safeguards cultural memory for future readers.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="#threats">Explore Threats</a>
+        <a class="btn secondary" href="#prevention">Preservation Practices</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Why Preservation Matters</h3>
+      <ul>
+        <li>Stabilize temperature and humidity to slow decay.</li>
+        <li>Reduce pests with monitoring and safe storage.</li>
+        <li>Maintain access to rare and fragile collections.</li>
+        <li>Document risks before damage spreads.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="threats">
+    <h2 class="section-title">Types of Biological Threats</h2>
+    <p class="section-lead">
+      Biological damage often begins quietly. The organisms below target cellulose, adhesives, leather, and textile fibers,
+      leaving tunnels, stains, and brittleness across collections.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <div class="badge">IN</div>
+        <h3>Insects</h3>
+        <p>Termites, silverfish, cockroaches, and booklice consume paper and glue, creating holes and surface erosion.</p>
+      </div>
+      <div class="card">
+        <div class="badge">RD</div>
+        <h3>Rodents</h3>
+        <p>Rats and mice gnaw bindings, tear labels, and contaminate shelves with droppings and nesting debris.</p>
+      </div>
+      <div class="card">
+        <div class="badge">FG</div>
+        <h3>Fungi and Mold</h3>
+        <p>Fungal spores activate in damp environments, staining paper and weakening fibers.</p>
+      </div>
+      <div class="card">
+        <div class="badge">BA</div>
+        <h3>Bacteria</h3>
+        <p>Microbial activity accelerates chemical breakdown of paper, photographs, and adhesives.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="causes">
+    <h2 class="section-title">Causes of Infestation</h2>
+    <p class="section-lead">
+      Biological damage is often triggered by environmental imbalance. Stable climate control and good housekeeping
+      minimize risk across collections.
+    </p>
+    <div class="causes">
+      <div class="cause-block">
+        <h4>Humidity and Temperature</h4>
+        <p>High humidity and warm temperatures create ideal growth conditions for mold and increase insect activity.</p>
+      </div>
+      <div class="cause-block">
+        <h4>Poor Ventilation</h4>
+        <p>Stagnant air traps moisture. Without airflow, spores and pests spread more quickly between shelves.</p>
+      </div>
+      <div class="cause-block">
+        <h4>Improper Storage</h4>
+        <p>Overcrowded shelves, cardboard debris, and organic packaging provide food and shelter for pests.</p>
+      </div>
+      <div class="cause-block">
+        <h4>Infrequent Cleaning</h4>
+        <p>Dust and residue support microbial growth. Regular cleaning reduces nutrients and early infestations.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="effects">
+    <h2 class="section-title">Effects on Library Materials</h2>
+    <p class="section-lead">
+      Biological factors affect every layer of a book or record. Damage is often irreversible once fibers are weakened.
+    </p>
+    <div class="effects-grid">
+      <div class="effect">
+        <h4>Paper and Documents</h4>
+        <p>Insects and mold degrade cellulose, leaving holes, stains, and brittle pages.</p>
+      </div>
+      <div class="effect">
+        <h4>Leather and Cloth</h4>
+        <p>Bindings and covers dry out, split, or develop fuzzy mold growth that weakens structure.</p>
+      </div>
+      <div class="effect">
+        <h4>Adhesives</h4>
+        <p>Glues and pastes become soft targets for pests and can fail under microbial activity.</p>
+      </div>
+      <div class="effect">
+        <h4>Photographs and Media</h4>
+        <p>Emulsions and film layers are sensitive to moisture, leading to discoloration and loss of detail.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="prevention">
+    <h2 class="section-title">Prevention and Control</h2>
+    <p class="section-lead">
+      Preservation strategies focus on prevention first. Libraries use combined environmental, procedural, and monitoring
+      practices to protect collections.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <div class="badge">CL</div>
+        <h3>Climate Control</h3>
+        <p>Maintain steady temperature and humidity levels to slow biological activity.</p>
+      </div>
+      <div class="card">
+        <div class="badge">ST</div>
+        <h3>Safe Storage</h3>
+        <p>Use archival boxes, spacers, and breathable shelving to minimize crowding.</p>
+      </div>
+      <div class="card">
+        <div class="badge">MN</div>
+        <h3>Monitoring</h3>
+        <p>Deploy traps and inspection schedules to detect pests early.</p>
+      </div>
+      <div class="card">
+        <div class="badge">CL</div>
+        <h3>Cleaning Routines</h3>
+        <p>Regular dusting and surface cleaning reduce nutrients and spore accumulation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2 class="section-title">Gallery: Visual Signs of Damage</h2>
+    <p class="section-lead">
+      Illustrative panels highlight typical biological damage found in library collections.
+    </p>
+    <div class="gallery">
+      <div class="gallery-item"><span>Insect tunneling</span></div>
+      <div class="gallery-item"><span>Silverfish grazing</span></div>
+      <div class="gallery-item"><span>Mold bloom</span></div>
+      <div class="gallery-item"><span>Rodent gnaw marks</span></div>
+      <div class="gallery-item"><span>Spore staining</span></div>
+      <div class="gallery-item"><span>Binding delamination</span></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About and References</h2>
+    <div class="about">
+      <div class="about-card">
+        <p>
+          This site summarizes biological risks to library and archival materials and outlines preventative preservation
+          practices used by librarians, conservators, and collections staff. It is intended as an educational overview for
+          students and the public.
+        </p>
+      </div>
+      <div class="about-card">
+        <h3>Further Reading</h3>
+        <ul class="references">
+          <li>National preservation guidelines for libraries and archives.</li>
+          <li>Integrated pest management practices for cultural heritage.</li>
+          <li>Environmental control standards for collections care.</li>
+          <li>Conservation resources on paper, leather, and photographic media.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p> Biological Factors Awareness</p>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    const revealTargets = document.querySelectorAll('.card, .gallery-item');
+    function revealOnScroll(){
+      const trigger = window.innerHeight * 0.86;
+      revealTargets.forEach(item => {
+        if(item.getBoundingClientRect().top < trigger){
+          item.classList.add('show');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+  </script>
+</body>
+</html>
