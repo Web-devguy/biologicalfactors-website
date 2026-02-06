@@ -327,9 +327,22 @@
       transition:transform 0.4s ease, opacity 0.4s ease;
     }
 
+    .gallery-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      cursor:zoom-in;
+      transition:transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
     .gallery-item.show{
       transform:translateY(0);
       opacity:1;
+    }
+
+    .gallery-item.is-expanded{
+      transform:none;
     }
 
     .gallery-item span{
@@ -342,6 +355,32 @@
       border-radius:999px;
       font-size:12px;
       letter-spacing:0.4px;
+    }
+
+    body.no-scroll{
+      overflow:hidden;
+    }
+
+    .image-expanded{
+      position:fixed;
+      inset:6vh 6vw;
+      width:auto;
+      height:auto;
+      max-width:88vw;
+      max-height:88vh;
+      object-fit:contain;
+      border-radius:16px;
+      z-index:1200;
+      cursor:zoom-out;
+      box-shadow:0 24px 60px rgba(29,42,58,0.35);
+      background:rgba(255,255,255,0.96);
+    }
+
+    .image-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(29,42,58,0.6);
+      z-index:1100;
     }
 
     .about{
@@ -576,11 +615,28 @@
     <p class="section-lead">
       Illustrative panels highlight typical biological damage found in library collections.
     </p>
-    <div class="gallery">
-      <div class="gallery-item"><span>Insect tunneling</span></div>
-      <div class="gallery-item"><span>Silverfish grazing</span></div>
-      <div class="gallery-item"><span>Mold bloom</span></div>
-      <div class="gallery-item"><span>Rodent gnaw marks</span></div>
+     <div class="gallery">
+      <div class="gallery-item">
+        <img src="img/Bookworm_damage_on_Errata_page.jpg" alt="Insect tunneling on book page">
+        <span>Insect tunneling</span>
+      </div>
+      <div class="gallery-item">
+        <img src="img/Bookworm_traces.JPG" alt="Bookworm traces on paper">
+        <span>Bookworm traces</span>
+      </div>
+      <div class="gallery-item">
+        <img src="img/Silverfish.jpg" alt="Silverfish">
+        <span>SilverFish</span></div>
+      <div class="gallery-item">
+        <img src="img/silverfish.jpeg" alt="Silverfish on the book">
+        <span>Silverfish</span></div>
+         <div class="gallery-item">
+        <img src="img/Rats on books.jpg" alt="Rats on books">
+        <span>Rats on Books</span></div>
+          <div class="gallery-item">
+        <img src="img/f64c168756e25c4787727c355e43d468.jpg" alt="Rats on books">
+        <span>Rats on Books</span></div>
+     
       <div class="gallery-item"><span>Spore staining</span></div>
       <div class="gallery-item"><span>Binding delamination</span></div>
     </div>
@@ -612,7 +668,7 @@
     <p> Biological Factors Awareness</p>
   </footer>
 
-  <script>
+   <script>
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
     menuBtn.addEventListener('click', () => {
@@ -630,6 +686,54 @@
     }
     window.addEventListener('scroll', revealOnScroll);
     revealOnScroll();
+
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+    const body = document.body;
+    let activeImage = null;
+    let activeItem = null;
+    let backdrop = null;
+
+    function closeExpanded(){
+      if(!activeImage){
+        return;
+      }
+      activeImage.classList.remove('image-expanded');
+      if(activeItem){
+        activeItem.classList.remove('is-expanded');
+        activeItem = null;
+      }
+      body.classList.remove('no-scroll');
+      if(backdrop){
+        backdrop.remove();
+        backdrop = null;
+      }
+      activeImage = null;
+    }
+
+    function openExpanded(image){
+      if(activeImage === image){
+        closeExpanded();
+        return;
+      }
+      if(activeImage){
+        closeExpanded();
+      }
+      activeImage = image;
+      activeItem = image.closest('.gallery-item');
+      if(activeItem){
+        activeItem.classList.add('is-expanded');
+      }
+      activeImage.classList.add('image-expanded');
+      body.classList.add('no-scroll');
+      backdrop = document.createElement('div');
+      backdrop.className = 'image-backdrop';
+      backdrop.addEventListener('click', closeExpanded);
+      document.body.appendChild(backdrop);
+    }
+
+    galleryImages.forEach(image => {
+      image.addEventListener('click', () => openExpanded(image));
+    });
   </script>
 </body>
 </html>
